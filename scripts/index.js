@@ -1,3 +1,5 @@
+import { setEventListeners, resetValidation } from "./validate.js";
+
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -54,27 +56,30 @@ const imageModalCloseButton = imageModal.querySelector(".popup__close");
 const imageModalImage = imageModal.querySelector(".popup__image");
 const imageModalCaption = imageModal.querySelector(".popup__caption");
 
-//funciones
+const popups = document.querySelectorAll(".popup");
 
+//funciones
 function getCardElement(cardData) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
   const cardImage = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+  const likeButton = cardElement.querySelector(".card__like-button");
+  const deleteButton = cardElement.querySelector(".card__delete-button");
+
+  cardTitle.textContent = cardData.name || "Sin título";
+  cardImage.src = cardData.link || "./images/placeholder.jpg";
+  cardImage.alt = cardData.name || "Sin título";
+
   cardImage.addEventListener("click", () => {
     handleImageClick(
       cardData.name || "Sin título",
       cardData.link || "./images/placeholder.jpg",
     );
   });
-  const cardTitle = cardElement.querySelector(".card__title");
-  cardTitle.textContent = cardData.name || "Sin título";
-  cardImage.src = cardData.link || "./images/placeholder.jpg";
-  cardImage.alt = cardData.name || "Sin título";
 
-  const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", handleLikeClick);
 
-  const deleteButton = cardElement.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", () => {
     cardElement.remove();
   });
@@ -84,25 +89,31 @@ function getCardElement(cardData) {
 
 function renderCard(name, link, container) {
   const cardData = { name, link };
-
   const cardElement = getCardElement(cardData);
-
   container.prepend(cardElement);
 }
+
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscClose);
 }
+
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscClose);
 }
+
 function fillProfileForm() {
   inputName.value = profileTitle.textContent;
   inputDescription.value = profileDescription.textContent;
 }
+
 function handleOpenEditModal() {
   fillProfileForm();
+  resetValidation(profileForm);
   openModal(editProfileModal);
 }
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
@@ -111,6 +122,7 @@ function handleProfileFormSubmit(evt) {
 
   closeModal(editProfileModal);
 }
+
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
 
@@ -118,11 +130,10 @@ function handleCardFormSubmit(evt) {
   const link = cardLinkInput.value;
 
   renderCard(name, link, cardsContainer);
-
   newCardForm.reset();
-
   closeModal(newCardModal);
 }
+
 function handleLikeClick(evt) {
   evt.target.classList.toggle("card__like-button_is-active");
 }
@@ -135,20 +146,37 @@ function handleImageClick(name, link) {
   openModal(imageModal);
 }
 
-//forEach
+function handleOverlayClick(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
+}
 
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
+
+//render inicial
 initialCards.forEach((card) => {
   renderCard(card.name, card.link, cardsContainer);
 });
 
 //eventListener
-
 editProfileButton.addEventListener("click", handleOpenEditModal);
+
 popupClose.addEventListener("click", () => {
   closeModal(editProfileModal);
 });
 
 addCardButton.addEventListener("click", () => {
+  newCardForm.reset();
+  resetValidation(newCardForm);
   openModal(newCardModal);
 });
 
@@ -162,4 +190,11 @@ newCardForm.addEventListener("submit", handleCardFormSubmit);
 
 imageModalCloseButton.addEventListener("click", () => {
   closeModal(imageModal);
+});
+
+setEventListeners(profileForm);
+setEventListeners(newCardForm);
+
+popups.forEach((popup) => {
+  popup.addEventListener("click", handleOverlayClick);
 });

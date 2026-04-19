@@ -58,6 +58,13 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 - Modal con imagen ampliada
 - Título dinámico según la tarjeta
 
+### ✅ Validación de formularios
+
+- Validación en tiempo real
+- Mensajes de error dinámicos
+- Botón deshabilitado cuando hay errores
+- Uso de validación nativa del navegador
+
 ---
 
 ## 🧠 Conceptos aplicados
@@ -68,9 +75,15 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 - Clonación de templates
 - Manejo de formularios
 - Separación de responsabilidades en funciones
+- JavaScript modular (separación en archivos)
 
 ---
 
 ## 📌 Notas
 
 Este proyecto forma parte del proceso de aprendizaje en desarrollo frontend y demuestra habilidades en JavaScript y manipulación del DOM.
+
+## 👩‍💻 Autor
+
+Adriana Capriles Rivera  
+Desarrolladora web en formación 🚀
