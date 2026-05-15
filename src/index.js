@@ -1,4 +1,5 @@
-import { setEventListeners, resetValidation } from "./validate.js";
+import { defaultFormConfig } from "./utils/constants.js";
+import { FormValidator } from "./components/FormValidator.js";
 
 const initialCards = [
   {
@@ -58,6 +59,12 @@ const imageModalCaption = imageModal.querySelector(".popup__caption");
 
 const popups = document.querySelectorAll(".popup");
 
+const editFormValidator = new FormValidator(defaultFormConfig, profileForm);
+const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
+
+editFormValidator.enableValidation();
+newCardFormValidator.enableValidation();
+
 //funciones
 function getCardElement(cardData) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -110,7 +117,7 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
-  resetValidation(profileForm);
+  editFormValidator.resetValidation();
   openModal(editProfileModal);
 }
 
@@ -176,7 +183,7 @@ popupClose.addEventListener("click", () => {
 
 addCardButton.addEventListener("click", () => {
   newCardForm.reset();
-  resetValidation(newCardForm);
+  newCardFormValidator.resetValidation();
   openModal(newCardModal);
 });
 
@@ -191,9 +198,6 @@ newCardForm.addEventListener("submit", handleCardFormSubmit);
 imageModalCloseButton.addEventListener("click", () => {
   closeModal(imageModal);
 });
-
-setEventListeners(profileForm);
-setEventListeners(newCardForm);
 
 popups.forEach((popup) => {
   popup.addEventListener("click", handleOverlayClick);
