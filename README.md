@@ -9,11 +9,11 @@ Esta aplicación permite visualizar, crear y gestionar tarjetas de lugares con i
 
 En este proyecto se implementa una interfaz dinámica donde el usuario puede:
 
-- Editar su perfil
+- Edición de perfil
 - Agregar nuevas tarjetas
-- Dar "like" a las tarjetas
-- Eliminar tarjetas
-- Ver imágenes en tamaño completo dentro de un modal
+- Visualización de imágenes en modal
+- Validación de formularios
+- Interacciones con tarjetas (like, delete)
 
 La aplicación está construida utilizando JavaScript para manipular el DOM y manejar la interactividad.
 
@@ -25,6 +25,8 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 - CSS3
 - JavaScript
 - Metodología BEM
+- Programación Orientada a Objetos (POO)
+- TypeScript
 
 ---
 
