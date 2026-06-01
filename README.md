@@ -7,15 +7,11 @@ Esta aplicación permite visualizar, crear y gestionar tarjetas de lugares con i
 
 ## 🚀 Descripción
 
-En este proyecto se implementa una interfaz dinámica donde el usuario puede:
+Aplicación interactiva desarrollada como parte del bootcamp de desarrollo web de TripleTen.
 
-- Edición de perfil
-- Agregar nuevas tarjetas
-- Visualización de imágenes en modal
-- Validación de formularios
-- Interacciones con tarjetas (like, delete)
+La aplicación permite a los usuarios gestionar un perfil personal y una colección de lugares favoritos mediante integración con una API REST. Los datos del perfil y las tarjetas se almacenan en un servidor remoto, permitiendo crear, editar y eliminar contenido de forma persistente.
 
-La aplicación está construida utilizando JavaScript para manipular el DOM y manejar la interactividad.
+El proyecto fue desarrollado utilizando TypeScript, Programación Orientada a Objetos (POO) y arquitectura modular.
 
 ---
 
@@ -27,6 +23,9 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 - Metodología BEM
 - Programación Orientada a Objetos (POO)
 - TypeScript
+- REST API
+- Fetch API
+- Arquitectura modular ES Modules
 
 ---
 
@@ -36,24 +35,31 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 
 - Apertura de modal
 - Relleno automático de inputs
-- Actualización de nombre y descripción
+- Actualización de nombre y descripción mediante API
+- Actualización de avatar
+- Persistencia de datos en servidor
 
 ### 🖼️ Tarjetas dinámicas
 
-- Renderizado desde un array inicial
-- Creación de tarjetas mediante `<template>`
-- Inserción dinámica en el DOM
+- Carga de tarjetas desde API
+- Creación de tarjetas persistentes
+- Eliminación de tarjetas con confirmación
+- Visualización de imágenes en modal
 
 ### ➕ Agregar nuevas tarjetas
 
 - Formulario funcional
 - Validación básica
 - Renderizado en tiempo real
+- Almacenamiento en servidor mediante API
+- Actualización automática de la interfaz
 
 ### ❤️ Interacciones
 
 - Botón de like (toggle)
 - Eliminación de tarjetas
+- Sistema de likes conectado a API
+- Actualización visual en tiempo real
 
 ### 🔍 Vista de imagen
 
@@ -78,6 +84,13 @@ La aplicación está construida utilizando JavaScript para manipular el DOM y ma
 - Manejo de formularios
 - Separación de responsabilidades en funciones
 - JavaScript modular (separación en archivos)
+- Consumo de APIs REST
+- Promises y Promise.all()
+- Async/Await
+- Manejo de estados de carga ("Guardando...")
+- Herencia de clases
+- Encapsulamiento
+- Tipado estático con TypeScript
 
 ---
 
@@ -87,5 +100,7 @@ Este proyecto forma parte del proceso de aprendizaje en desarrollo frontend y de
 
 ## 👩‍💻 Autor
 
-Adriana Capriles Rivera  
+Adriana Capriles Rivera
+
 Desarrolladora web en formación 🚀
+Bootcamp de Desarrollo Web — TripleTen
