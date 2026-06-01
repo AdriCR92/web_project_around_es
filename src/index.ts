@@ -5,34 +5,16 @@ import { Section } from "./components/Section.js";
 import { PopupWithImage } from "./components/PopupWithImage.js";
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import { UserInfo } from "./components/UserInfo.js";
+import { PopupWithConfirmation } from "./components/PopupWithConfirmation.js";
 
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+import { apiConfig } from "./utils/constants.js";
+import { Api } from "./components/Api.js";
+
 //selectores
+const api = new Api({
+  baseUrl: apiConfig.baseUrl,
+  headers: apiConfig.headers,
+});
 
 const profileForm = document.querySelector("#edit-profile-form") as HTMLFormElement;
 const editProfileButton = document.querySelector(".profile__edit-button") as HTMLFormElement;
@@ -40,16 +22,40 @@ const editProfileButton = document.querySelector(".profile__edit-button") as HTM
 const addCardButton = document.querySelector(".profile__add-button") as HTMLFormElement;
 const newCardForm = document.querySelector("#new-card-form") as HTMLFormElement;
 const newCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
-  renderCard(formData["place-name"], formData.link);
+  api.addCard(formData["place-name"], formData.link)
+    .then((cardData) => {
+      renderCard(cardData);
+    })
+    .catch((err) => console.error(err));
+
   newCardFormValidator.resetValidation();
 });
+const deleteCardPopup = new PopupWithConfirmation(
+  "#delete-card-popup",
+  () => {
+    console.log("Confirmar eliminación");
+  }
+);
+const cardSection = new Section<CardData>(
+  {
+    items: [],
+    renderer: (cardData) => {
+      renderCard(cardData);
+    },
+  },
+  ".cards__list"
+);
 
 const editProfilePopup = new PopupWithForm("#edit-popup", (formData) => {
-  userInfo.setUserInfo({
-    name: formData.name,
-    job: formData.description,
-  });
-
+  api.updateUserProfile(formData.name, formData.description)
+    .then((data) => {
+      userInfo.setUserInfo({
+        name: data.name,
+        job: data.about,
+        avatar: data.avatar,
+      });
+    })
+    .catch((err) => console.error(err));
   editFormValidator.resetValidation();
 });
 
@@ -60,6 +66,7 @@ const inputDescription = document.querySelector(
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
 
 const imagePopup = new PopupWithImage("#image-popup");
@@ -67,16 +74,26 @@ const imagePopup = new PopupWithImage("#image-popup");
 const editFormValidator = new FormValidator(defaultFormConfig, profileForm);
 const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
 
+
 editFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
 imagePopup.setEventListeners();
 newCardPopup.setEventListeners();
 editProfilePopup.setEventListeners();
+deleteCardPopup.setEventListeners();
 
 //funciones
 
-function renderCard(name: string, link: string): void {
-  const card = new Card({ name, link }, "#card-template", handleImageClick);
+type CardData = {
+  name: string;
+  link: string;
+  _id: string;
+  owner?: string;
+  isLiked?: boolean;
+};
+
+function renderCard(cardData: CardData): void {
+  const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getView();
 
   cardSection.addItem(cardElement);
@@ -93,23 +110,8 @@ function handleImageClick(name: string, link: string): void {
   imagePopup.open(name, link);
 }
 
-//render inicial
-type CardData = {
-  name: string;
-  link: string;
-};
 
-const cardSection = new Section<CardData>(
-  {
-    items: initialCards,
-    renderer: (cardData) => {
-      renderCard(cardData.name, cardData.link);
-    },
-  },
-  ".cards__list"
-);
-
-cardSection.renderItems();
+//Eventos
 
 addCardButton.addEventListener("click", () => {
   newCardFormValidator.resetValidation();
@@ -121,3 +123,25 @@ editProfileButton.addEventListener("click", () => {
   editFormValidator.resetValidation();
   editProfilePopup.open();
 });
+
+//Inicializacion
+Promise.all([
+  api.getUserInfo(),
+  api.getInitialCards(),
+])
+  .then(([userData, cards]) => {
+
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+      avatar: userData.avatar,
+    });
+
+    cards.forEach((cardData: CardData) => {
+      renderCard(cardData);
+    });
+
+  })
+  .catch((err) => {
+    console.error(err);
+  });
