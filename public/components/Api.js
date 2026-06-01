@@ -17,20 +17,39 @@ export class Api {
         return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
             headers: this._headers,
-            body: JSON.stringify({
-                name,
-                about,
-            }),
+            body: JSON.stringify({ name, about }),
         }).then((res) => res.json());
     }
     addCard(name, link) {
         return fetch(`${this._baseUrl}/cards`, {
             method: "POST",
             headers: this._headers,
-            body: JSON.stringify({
-                name,
-                link,
-            }),
+            body: JSON.stringify({ name, link }),
+        }).then((res) => res.json());
+    }
+    deleteCard(cardId) {
+        return fetch(`${this._baseUrl}/cards/${cardId}`, {
+            method: "DELETE",
+            headers: this._headers,
+        }).then((res) => res.json());
+    }
+    addLike(cardId) {
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+            method: "PUT",
+            headers: this._headers,
+        }).then((res) => res.json());
+    }
+    removeLike(cardId) {
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+            method: "DELETE",
+            headers: this._headers,
+        }).then((res) => res.json());
+    }
+    updateAvatar(avatar) {
+        return fetch(`${this._baseUrl}/users/me/avatar`, {
+            method: "PATCH",
+            headers: this._headers,
+            body: JSON.stringify({ avatar }),
         }).then((res) => res.json());
     }
 }

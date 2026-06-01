@@ -33,7 +33,18 @@ const newCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
 const deleteCardPopup = new PopupWithConfirmation(
   "#delete-card-popup",
   () => {
-    console.log("Confirmar eliminación");
+    if (!selectedCardId || !selectedCardElement) {
+      return;
+    }
+    api.deleteCard(selectedCardId)
+      .then(() => {
+        selectedCardElement?.remove();
+        deleteCardPopup.close();
+
+        selectedCardId = null;
+        selectedCardElement = null;
+      })
+      .catch((err) => console.error(err));
   }
 );
 const cardSection = new Section<CardData>(
@@ -71,18 +82,48 @@ const userInfo = new UserInfo({
 
 const imagePopup = new PopupWithImage("#image-popup");
 
+const avatarForm = document.querySelector("#avatar-form") as HTMLFormElement;
+const profileAvatarButton = document.querySelector(
+  ".profile__avatar-button"
+) as HTMLButtonElement;
+
+const avatarFormValidator = new FormValidator(defaultFormConfig, avatarForm);
+
+const avatarPopup = new PopupWithForm("#avatar-popup", (formData) => {
+  api.updateAvatar(formData.avatar)
+    .then((data) => {
+      userInfo.setUserInfo({
+        name: data.name,
+        job: data.about,
+        avatar: data.avatar,
+      });
+      avatarPopup.close();
+    })
+    .catch((err) => console.error(err));
+
+  avatarFormValidator.resetValidation();
+});
+
 const editFormValidator = new FormValidator(defaultFormConfig, profileForm);
 const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
 
-
+//validaciones y eventos
 editFormValidator.enableValidation();
 newCardFormValidator.enableValidation();
 imagePopup.setEventListeners();
 newCardPopup.setEventListeners();
 editProfilePopup.setEventListeners();
 deleteCardPopup.setEventListeners();
+avatarFormValidator.enableValidation();
+avatarPopup.setEventListeners();
+profileAvatarButton.addEventListener("click", () => {
+  avatarFormValidator.resetValidation();
+  avatarPopup.open();
+});
 
 //funciones
+let selectedCardId: string | null = null;
+let selectedCardElement: HTMLElement | null = null;
 
 type CardData = {
   name: string;
@@ -93,9 +134,16 @@ type CardData = {
 };
 
 function renderCard(cardData: CardData): void {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const card = new Card(
+    cardData,
+    "#card-template",
+    handleImageClick,
+    handleDeleteCardClick,
+    (cardId, isLiked) => {
+      handleLikeCardClick(cardId, isLiked, card);
+    }
+  );
   const cardElement = card.getView();
-
   cardSection.addItem(cardElement);
 }
 
@@ -110,7 +158,28 @@ function handleImageClick(name: string, link: string): void {
   imagePopup.open(name, link);
 }
 
+function handleDeleteCardClick(
+  cardId: string,
+  cardElement: HTMLElement
+): void {
+  selectedCardId = cardId;
+  selectedCardElement = cardElement;
+  deleteCardPopup.open();
+}
 
+function handleLikeCardClick(
+  cardId: string,
+  isLiked: boolean,
+  card: Card
+): void {
+  const request = isLiked ? api.removeLike(cardId) : api.addLike(cardId);
+
+  request
+    .then((updatedCard) => {
+      card.setLike(updatedCard.isLiked);
+    })
+    .catch((err) => console.error(err));
+}
 //Eventos
 
 addCardButton.addEventListener("click", () => {

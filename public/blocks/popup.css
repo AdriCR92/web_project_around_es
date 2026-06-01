@@ -141,7 +141,18 @@
 .popup__button_type_confirm {
   margin-top: 38px;
 }
+.popup__content_type_confirm {
+  min-height: 0;
+  padding: 34px 36px 36px;
+}
 
+.popup__title_type_confirm {
+  margin: 0 0 38px;
+}
+
+.popup__button_type_confirm {
+  margin: 0;
+}
 @media screen and (max-width: 544px) {
   .popup {
     bottom: 112px;

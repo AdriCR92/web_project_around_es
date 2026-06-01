@@ -1,9 +1,13 @@
 export class Card {
-    constructor(cardData, templateSelector, handleCardClick) {
+    constructor(cardData, templateSelector, handleCardClick, handleDeleteClick, handleLikeClick) {
+        this._id = cardData._id;
         this._name = cardData.name || "Sin título";
         this._link = cardData.link || "./images/placeholder.jpg";
+        this._isLiked = cardData.isLiked || false;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
+        this._handleDeleteClick = handleDeleteClick;
+        this._handleLikeClick = handleLikeClick;
     }
     _getTemplate() {
         const template = document.querySelector(this._templateSelector);
@@ -12,18 +16,24 @@ export class Card {
             .cloneNode(true);
         return cardElement;
     }
-    _handleLikeClick() {
-        this._likeButton.classList.toggle("card__like-button_is-active");
+    _setLikeState() {
+        if (this._isLiked) {
+            this._likeButton.classList.add("card__like-button_is-active");
+        }
+        else {
+            this._likeButton.classList.remove("card__like-button_is-active");
+        }
     }
-    _handleDeleteClick() {
-        this._element.remove();
+    setLike(isLiked) {
+        this._isLiked = isLiked;
+        this._setLikeState();
     }
     _setEventListeners() {
         this._likeButton.addEventListener("click", () => {
-            this._handleLikeClick();
+            this._handleLikeClick(this._id, this._isLiked);
         });
         this._deleteButton.addEventListener("click", () => {
-            this._handleDeleteClick();
+            this._handleDeleteClick(this._id, this._element);
         });
         this._cardImage.addEventListener("click", () => {
             this._handleCardClick(this._name, this._link);
@@ -38,6 +48,7 @@ export class Card {
         this._cardTitle.textContent = this._name;
         this._cardImage.src = this._link;
         this._cardImage.alt = this._name;
+        this._setLikeState();
         this._setEventListeners();
         return this._element;
     }

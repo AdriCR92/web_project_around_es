@@ -7,10 +7,7 @@ export class Api {
   private _baseUrl: string;
   private _headers: HeadersInit;
 
-  constructor(options: {
-    baseUrl: string;
-    headers: HeadersInit;
-  }) {
+  constructor(options: ApiOptions) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
   }
@@ -31,10 +28,7 @@ export class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        name,
-        about,
-      }),
+      body: JSON.stringify({ name, about }),
     }).then((res) => res.json());
   }
 
@@ -42,10 +36,34 @@ export class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({
-        name,
-        link,
-      }),
+      body: JSON.stringify({ name, link }),
     }).then((res) => res.json());
   }
+
+  deleteCard(cardId: string) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((res) => res.json());
+  }
+addLike(cardId: string) {
+  return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    method: "PUT",
+    headers: this._headers,
+  }).then((res) => res.json());
+}
+removeLike(cardId: string) {
+  return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    method: "DELETE",
+    headers: this._headers,
+  }).then((res) => res.json());
+}
+updateAvatar(avatar: string) {
+  return fetch(`${this._baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: this._headers,
+    body: JSON.stringify({ avatar }),
+  }).then((res) => res.json());
+}
+
 }
