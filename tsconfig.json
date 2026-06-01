@@ -7,7 +7,8 @@
     "allowJs": true,
     "checkJs": false,
     "strict": false,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "lib": ["ES2018", "DOM"]
   },
   "include": ["src"]
 }

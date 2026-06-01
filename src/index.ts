@@ -16,18 +16,43 @@ const api = new Api({
   headers: apiConfig.headers,
 });
 
+//profile
 const profileForm = document.querySelector("#edit-profile-form") as HTMLFormElement;
 const editProfileButton = document.querySelector(".profile__edit-button") as HTMLFormElement;
+const editProfilePopup = new PopupWithForm("#edit-popup", (formData) => {
+  editProfilePopup.setButtonText("Guardando...");
 
+  api.updateUserProfile(formData.name, formData.description)
+    .then((data) => {
+      userInfo.setUserInfo({
+        name: data.name,
+        job: data.about,
+        avatar: data.avatar,
+      });
+      editProfilePopup.close();
+    })
+    .catch((err) => console.error("Fallo al cargar datos iniciales:", err))
+    .finally(() => {
+      editProfilePopup.setButtonText("Guardar");
+    });
+
+  editFormValidator.resetValidation();
+});
+
+//cards
 const addCardButton = document.querySelector(".profile__add-button") as HTMLFormElement;
 const newCardForm = document.querySelector("#new-card-form") as HTMLFormElement;
 const newCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
+  newCardPopup.setButtonText("Guardando...");
   api.addCard(formData["place-name"], formData.link)
     .then((cardData) => {
       renderCard(cardData);
+      newCardPopup.close();
     })
-    .catch((err) => console.error(err));
-
+    .catch((err) => console.error("Fallo al cargar datos iniciales:", err))
+    .finally(() => {
+      newCardPopup.setButtonText("Crear");
+    });
   newCardFormValidator.resetValidation();
 });
 const deleteCardPopup = new PopupWithConfirmation(
@@ -44,7 +69,7 @@ const deleteCardPopup = new PopupWithConfirmation(
         selectedCardId = null;
         selectedCardElement = null;
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Fallo al cargar datos iniciales:", err));
   }
 );
 const cardSection = new Section<CardData>(
@@ -57,19 +82,8 @@ const cardSection = new Section<CardData>(
   ".cards__list"
 );
 
-const editProfilePopup = new PopupWithForm("#edit-popup", (formData) => {
-  api.updateUserProfile(formData.name, formData.description)
-    .then((data) => {
-      userInfo.setUserInfo({
-        name: data.name,
-        job: data.about,
-        avatar: data.avatar,
-      });
-    })
-    .catch((err) => console.error(err));
-  editFormValidator.resetValidation();
-});
 
+//inputs
 const inputName = document.querySelector(".popup__input_type_name") as HTMLInputElement;
 const inputDescription = document.querySelector(
   ".popup__input_type_description",
@@ -80,16 +94,17 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__image",
 });
 
+//image
 const imagePopup = new PopupWithImage("#image-popup");
 
+//avatar
 const avatarForm = document.querySelector("#avatar-form") as HTMLFormElement;
 const profileAvatarButton = document.querySelector(
   ".profile__avatar-button"
 ) as HTMLButtonElement;
-
-const avatarFormValidator = new FormValidator(defaultFormConfig, avatarForm);
-
 const avatarPopup = new PopupWithForm("#avatar-popup", (formData) => {
+  avatarPopup.setButtonText("Guardando...");
+
   api.updateAvatar(formData.avatar)
     .then((data) => {
       userInfo.setUserInfo({
@@ -99,13 +114,18 @@ const avatarPopup = new PopupWithForm("#avatar-popup", (formData) => {
       });
       avatarPopup.close();
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error("Fallo al cargar datos iniciales:", err))
+    .finally(() => {
+      avatarPopup.setButtonText("Guardar");
+    });
 
   avatarFormValidator.resetValidation();
 });
 
+//validators
 const editFormValidator = new FormValidator(defaultFormConfig, profileForm);
 const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
+const avatarFormValidator = new FormValidator(defaultFormConfig, avatarForm);
 
 //validaciones y eventos
 editFormValidator.enableValidation();
@@ -173,12 +193,11 @@ function handleLikeCardClick(
   card: Card
 ): void {
   const request = isLiked ? api.removeLike(cardId) : api.addLike(cardId);
-
   request
     .then((updatedCard) => {
       card.setLike(updatedCard.isLiked);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error("Fallo al cargar datos iniciales:", err));
 }
 //Eventos
 
@@ -199,18 +218,15 @@ Promise.all([
   api.getInitialCards(),
 ])
   .then(([userData, cards]) => {
-
     userInfo.setUserInfo({
       name: userData.name,
       job: userData.about,
       avatar: userData.avatar,
     });
-
     cards.forEach((cardData: CardData) => {
       renderCard(cardData);
     });
-
   })
   .catch((err) => {
-    console.error(err);
+    console.error("Fallo al cargar datos iniciales:", err);
   });

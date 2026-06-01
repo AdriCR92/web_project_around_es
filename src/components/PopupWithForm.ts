@@ -34,13 +34,15 @@ export class PopupWithForm extends Popup {
     this._form.addEventListener("submit", (evt: SubmitEvent) => {
       evt.preventDefault();
 
-      this._handleFormSubmit(this._getInputValues());
-      this.close(); // 👈 importante
+      this._handleFormSubmit(this._getInputValues()); 
     });
   }
-
   close(): void {
     super.close();
     this._form.reset();
   }
+  setButtonText(text: string): void {
+  const submitButton = this._form.querySelector(".popup__button") as HTMLButtonElement;
+  submitButton.textContent = text;
+}
 }
