@@ -1,106 +1,82 @@
-# 🌎 Around The U.S.
+🌎 Around The U.S.
 
-Proyecto interactivo desarrollado como parte del bootcamp de desarrollo web en TripleTen.
-Esta aplicación permite visualizar, crear y gestionar tarjetas de lugares con imágenes.
+![Around The U.S. Application Preview](./screenshots/around-home-page.jpeg)
 
----
+Interactive web application developed as part of the TripleTen Web Development Bootcamp.
 
-## 🚀 Descripción
+This project allows users to manage a personal profile and a collection of image cards through a REST API. Users can create, edit, like, and delete cards while keeping data synchronized with a remote server.
 
-Aplicación interactiva desarrollada como parte del bootcamp de desarrollo web de TripleTen.
+📸 Project Preview
 
-La aplicación permite a los usuarios gestionar un perfil personal y una colección de lugares favoritos mediante integración con una API REST. Los datos del perfil y las tarjetas se almacenan en un servidor remoto, permitiendo crear, editar y eliminar contenido de forma persistente.
+⸻
 
-El proyecto fue desarrollado utilizando TypeScript, Programación Orientada a Objetos (POO) y arquitectura modular.
+🚀 Features
 
----
+* Edit user profile information
+* Update profile avatar
+* Create new image cards
+* Delete cards with confirmation modal
+* Like and unlike cards
+* View images in fullscreen modal
+* Form validation with real-time feedback
+* Persistent data storage through REST API integration
+* Responsive design for multiple screen sizes
 
-## 🛠️ Tecnologías utilizadas
+⸻
 
-- HTML5
-- CSS3
-- JavaScript
-- Metodología BEM
-- Programación Orientada a Objetos (POO)
-- TypeScript
-- REST API
-- Fetch API
-- Arquitectura modular ES Modules
+🛠️ Technologies
 
----
+* TypeScript
+* JavaScript (ES6+)
+* HTML5
+* CSS3
+* BEM Methodology
+* Object-Oriented Programming (OOP)
+* REST API
+* Fetch API
+* Async/Await
+* ES Modules
 
-## ✨ Funcionalidades principales
+⸻
 
-### 👤 Edición de perfil
+🧠 Key Concepts Applied
 
-- Apertura de modal
-- Relleno automático de inputs
-- Actualización de nombre y descripción mediante API
-- Actualización de avatar
-- Persistencia de datos en servidor
+* DOM Manipulation
+* Event Handling
+* Form Validation
+* Component-Based Architecture
+* API Integration
+* Promise.all()
+* Class Inheritance
+* Encapsulation
+* Modular Code Organization
+* Type Safety with TypeScript
 
-### 🖼️ Tarjetas dinámicas
+⸻
 
-- Carga de tarjetas desde API
-- Creación de tarjetas persistentes
-- Eliminación de tarjetas con confirmación
-- Visualización de imágenes en modal
+💡 Challenges & Learnings
 
-### ➕ Agregar nuevas tarjetas
+One of the main challenges of this project was organizing the application using Object-Oriented Programming principles and a modular architecture while maintaining clean and scalable code.
 
-- Formulario funcional
-- Validación básica
-- Renderizado en tiempo real
-- Almacenamiento en servidor mediante API
-- Actualización automática de la interfaz
+Through this project, I strengthened my understanding of:
 
-### ❤️ Interacciones
+* TypeScript development
+* API integration
+* Asynchronous JavaScript
+* OOP design patterns
+* Professional frontend workflows
+* State management and user interactions
 
-- Botón de like (toggle)
-- Eliminación de tarjetas
-- Sistema de likes conectado a API
-- Actualización visual en tiempo real
+⸻
 
-### 🔍 Vista de imagen
-
-- Modal con imagen ampliada
-- Título dinámico según la tarjeta
-
-### ✅ Validación de formularios
-
-- Validación en tiempo real
-- Mensajes de error dinámicos
-- Botón deshabilitado cuando hay errores
-- Uso de validación nativa del navegador
-
----
-
-## 🧠 Conceptos aplicados
-
-- Manipulación del DOM
-- Event listeners
-- Funciones reutilizables
-- Clonación de templates
-- Manejo de formularios
-- Separación de responsabilidades en funciones
-- JavaScript modular (separación en archivos)
-- Consumo de APIs REST
-- Promises y Promise.all()
-- Async/Await
-- Manejo de estados de carga ("Guardando...")
-- Herencia de clases
-- Encapsulamiento
-- Tipado estático con TypeScript
-
----
-
-## 📌 Notas
-
-Este proyecto forma parte del proceso de aprendizaje en desarrollo frontend y demuestra habilidades en JavaScript y manipulación del DOM.
-
-## 👩‍💻 Autor
+👩‍💻 Author
 
 Adriana Capriles Rivera
 
-Desarrolladora web en formación 🚀
-Bootcamp de Desarrollo Web — TripleTen
+Junior Web Developer | TripleTen Student
+
+📍 Virginia, USA
+
+🔗 LinkedIn: https://www.linkedin.com/in/adriana-capriles-rivera/
+
+🔗 GitHub: https://github.com/AdriCR92
