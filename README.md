@@ -1,6 +1,6 @@
 🌎 Around The U.S.
 
-![Around The U.S. Application Preview](./screenshots/around-home-page.jpeg)
+![Around The U.S. Application Preview](./screenshots/around-home-page.png)
 
 Interactive web application developed as part of the TripleTen Web Development Bootcamp.
 
